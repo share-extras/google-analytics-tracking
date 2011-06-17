@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<model name="pt:partnertracking" xmlns="http://www.alfresco.org/model/dictionary/1.0">
+
+   <description>Partner KPI Tracking Model</description>
+   <author>Gabriele Columbro</author>
+   <version>1.0</version>
+
+   <imports>
+       <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
+       <import uri="http://www.alfresco.org/model/content/1.0" prefix="cm" />
+   </imports>
+
+   <namespaces>
+       <namespace uri="http://www.alfresco.org/model/partnertracking/1.0" prefix="pt" />
+   </namespaces>
+
+   <aspects>
+
+       <aspect name="pt:trackable">
+           <title>Mark a content for tracking</title>
+           <properties>
+               <property name="pt:trackingEnabled">
+                   <title>Tracking Enabled</title>
+                   <type>d:boolean</type>
+                   <default>true</default>
+               </property>
+            </properties>
+       </aspect>
+
+   </aspects>
+
+</model>

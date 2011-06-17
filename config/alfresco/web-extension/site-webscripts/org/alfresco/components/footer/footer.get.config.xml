@@ -1,0 +1,6 @@
+<tracking>
+    <trackedSite>MySite</trackedSite>
+    <trackingId></trackingId> <!-- GA tracking ID -->
+    <defaultEventCategory>Document</defaultEventCategory>
+    <trackableEventCategory>Trackable Document</trackableEventCategory>
+</tracking>
