@@ -129,7 +129,7 @@ if (typeof Extras == "undefined" || !Extras)
             for (var i = 0; i < customVars.length; i++)
             {
                customVar = customVars[i];
-               this._gaq.push(['_setCustomVar', i, customVar.name, customVar.value, customVar.scope ! 3]);
+               this._gaq.push(['_setCustomVar', i, customVar.name, customVar.value, customVar.scope || 3]);
             }
             // Is this a document details page?
             if (ddMatch != null)
