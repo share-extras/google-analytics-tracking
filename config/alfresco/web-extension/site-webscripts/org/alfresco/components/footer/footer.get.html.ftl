@@ -6,6 +6,7 @@
 </div>
 <#assign siteId = page.url.templateArgs.site!"">
 <#if config.script.tracking??>
+<#if config.script.tracking.trackingId != "">
 <script type="text/javascript">//<![CDATA[
    new Extras.GoogleAnalyticsTracking("${args.htmlid}").setOptions(
    {
@@ -20,9 +21,18 @@
             "value": "${cv.value}",
             "scope": "${cv.scope}"
          }<#if cv_has_next>,</#if>
+      </#list></#if>],
+      "documentTrackingEvents": [<#if customDocEvents??><#list customDocEvents as ce>
+         {
+            "className": "${ce.className}",
+            "layerName": "${ce.layerName!ce.className}"
+         }<#if ce_has_next>,</#if>
       </#list></#if>]
    }).setMessages(
       ${messages}
    );
 //]]></script>
+<#else>
+<div class="ga-tracker-warning">${msg("warning.noTrackingId")}</div>
+</#if>
 </#if>

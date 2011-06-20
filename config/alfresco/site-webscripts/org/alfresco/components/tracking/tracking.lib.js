@@ -1,16 +1,15 @@
 var scriptConfig = new XML(config.script);
-var TRACKED_SITE = scriptConfig.trackedSite; 
 
 /**
- * Whether the given site is trackable
+ * Whether the current page is trackable
  * 
- * @param siteId  {string} Site ID
- * @return  {boolean} True if trackable, false otherwise
+ * @return  {boolean} True if current page is trackable, false otherwise
  */
-function isTrackedSite(siteId)
+function isTrackingEnabled()
 {
-   return scriptConfig.global == "true" || (siteId != null && siteId == TRACKED_SITE);
-   
+   var siteId = page.url.templateArgs.site || null;
+   return scriptConfig.global == "true" || (siteId != null && scriptConfig.siteIds != null
+         && scriptConfig.siteIds.split(",").indexOf(siteId) > -1);
 }
 
 /**
@@ -20,6 +19,7 @@ function isTrackedSite(siteId)
  */
 function prepareTracking()
 {
-   model.trackingEnabled = isTrackedSite(page.url.templateArgs.site || null);
+   model.trackingEnabled = isTrackingEnabled();
    model.customVars = [];
+   model.customDocEvents = []; // Objects { className: x, layerName: y }
 }

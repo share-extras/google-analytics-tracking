@@ -1,7 +1,7 @@
 <tracking>
-    <global>false</global>
-    <trackedSite>MySite</trackedSite>
-    <trackingId></trackingId> <!-- GA tracking ID, i.e. UA-xxxxxx-x -->
+    <trackingId></trackingId> <!-- MANDATORY GA tracking ID, i.e. UA-xxxxxx-x -->
+    <global>true</global>
+    <sites></sites> <!-- Use this with global=false to track only specific sites (comma-separated siteIds) -->
     <defaultEventCategory>Document</defaultEventCategory>
     <trackableEventCategory>Trackable Document</trackableEventCategory>
 </tracking>
