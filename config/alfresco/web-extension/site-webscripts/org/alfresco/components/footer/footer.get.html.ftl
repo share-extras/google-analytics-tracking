@@ -5,12 +5,12 @@
    </span>
 </div>
 <#assign siteId = page.url.templateArgs.site!"">
-<#if config.script.tracking>
+<#if config.script.tracking??>
 <script type="text/javascript">//<![CDATA[
    new Extras.GoogleAnalyticsTracking("${args.htmlid}").setOptions(
    {
       "siteId": "${siteId}",
-      "trackingEnabled": "${trackingEnabled?string}",
+      "trackingEnabled": ${trackingEnabled?string},
       "trackingId": "${config.script.tracking.trackingId}",
       "defaultEventCategory": "${config.script.tracking.defaultEventCategory}",
       "trackableEventCategory": "${config.script.tracking.trackableEventCategory}",

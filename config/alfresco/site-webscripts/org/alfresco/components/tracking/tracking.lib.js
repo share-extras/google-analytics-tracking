@@ -9,7 +9,7 @@ var TRACKED_SITE = scriptConfig.trackedSite;
  */
 function isTrackedSite(siteId)
 {
-   return (siteId != null && siteId == TRACKED_SITE);
+   return scriptConfig.global.toString() == "true" || (siteId != null && siteId == TRACKED_SITE);
    
 }
 

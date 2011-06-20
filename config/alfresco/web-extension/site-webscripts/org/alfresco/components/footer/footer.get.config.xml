@@ -1,6 +1,7 @@
 <tracking>
+    <global>false</global>
     <trackedSite>MySite</trackedSite>
-    <trackingId></trackingId> <!-- GA tracking ID -->
+    <trackingId></trackingId> <!-- GA tracking ID, i.e. UA-xxxxxx-x -->
     <defaultEventCategory>Document</defaultEventCategory>
     <trackableEventCategory>Trackable Document</trackableEventCategory>
 </tracking>

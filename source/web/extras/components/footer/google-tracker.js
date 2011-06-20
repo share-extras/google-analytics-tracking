@@ -15,6 +15,11 @@ if (typeof Extras == "undefined" || !Extras)
 }
 
 /**
+ * Google Analytics queue
+ */
+var _gaq = _gaq || [];
+
+/**
  * Google Analytics Tracking component.
  * 
  * @namespace Extras
@@ -23,16 +28,24 @@ if (typeof Extras == "undefined" || !Extras)
 (function()
 {
    /**
+    * YUI Library aliases
+    */
+   var Dom = YAHOO.util.Dom,
+      Event = YAHOO.util.Event;
+   
+   /**
     * ConsoleCreateUsers constructor.
     * 
     * @param {String} htmlId The HTML id of the parent element
     * @return {Extras.ConsoleCreateUsers} The new ConsoleCreateUsers instance
     * @constructor
     */
-   Extras.GoogleAnalyticsTracking = function(htmlid)
+   Extras.GoogleAnalyticsTracking = function(htmlId)
    {
-      /* Decoupled event listener */
+      /* Decoupled event listeners */
       YAHOO.Bubbling.on("trackableContentEvent", this.onTrackableContentEvent, this);
+      YAHOO.Bubbling.on("onActionView", this.onActionView, this);
+      YAHOO.Bubbling.on("onActionDownload", this.onActionDownload, this);
       
       return Extras.GoogleAnalyticsTracking.superclass.constructor.call(this, "Extras.GoogleAnalyticsTracking", htmlId);
    };
@@ -108,7 +121,31 @@ if (typeof Extras == "undefined" || !Extras)
           * @type array
           * @default []
           */
-         customVars: []
+         customVars: [],
+         
+         /**
+          * Events to be tracked via Bubbling for different document actions - specify as an array of object literals.
+          * 
+          * [
+          * {
+          *    className: "onActionDownload",
+          *    layerName: "onActionDownload"
+          * },
+          * ...
+          * ]
+          * 
+          * @property documentTrackingEvents
+          */
+         documentTrackingEvents: [
+            {
+               className: "onActionDownload",
+               layerName: "onActionDownload"
+            },
+            {
+               className: "onActionView",
+               layerName: "onActionView"
+            }
+         ]
       },
 
       /**
@@ -120,16 +157,15 @@ if (typeof Extras == "undefined" || !Extras)
       {
          if (this.options.trackingEnabled === true && this.options.trackingId != "")
          {
-            var customVar, ddRe = /\/document-details?nodeRef=([\w+]:\/[\w+]\/[\-\w+])')/,
+            var customVar, ddRe = /\/document-details?nodeRef=([\w+]:\/[\w+]\/[\-\w+])/,
                ddMatch = ddRe.exec(window.location.href);
             
-            this._gaq = this._gaq || [];
-            this._gaq.push(['_setAccount', this.options.trackingId]);
+            _gaq.push(['_setAccount', this.options.trackingId]);
             // See http://code.google.com/apis/analytics/docs/tracking/gaTrackingCustomVariables.html
-            for (var i = 0; i < customVars.length; i++)
+            for (var i = 0; i < this.options.customVars.length; i++)
             {
-               customVar = customVars[i];
-               this._gaq.push(['_setCustomVar', i, customVar.name, customVar.value, customVar.scope || 3]);
+               customVar = this.options.customVars[i];
+               _gaq.push(['_setCustomVar', i, customVar.name, customVar.value, customVar.scope || 3]);
             }
             // Is this a document details page?
             if (ddMatch != null)
@@ -138,15 +174,39 @@ if (typeof Extras == "undefined" || !Extras)
             }
             else
             {
-               this._gaq.push(['_trackPageview']); // Perform tracking immediately
+               _gaq.push(['_trackPageview']); // Perform tracking immediately
             }
             
-            var _gaq = this._gaq;
+            // Check if this is a document details or document list page
+            if (window.location.href.indexOf("/document-details") > 0 ||
+                  window.location.href.indexOf("/documentlibrary") > 0)
+            {
+               for (var i = 0; i < this.options.documentTrackingEvents.length; i++)
+               {
+                  var els = Dom.getElementsByClassName(this.options.documentTrackingEvents[i].className, "div");
+                  for (var j = 0; j < els.length; j++)
+                  {
+                     // Look for anchor elements within the div
+                     var aEls = els[j].getElementsByTagName("a");
+                     if (aEls.length == 1)
+                     {
+                        /*
+                        Event.addListener(aEls[0], "click", function(e) {
+                           YAHOO.Bubbling.fire(this.options.documentTrackingEvents[i].layerName, {});
+                        }, this, true);
+                        */
+                        Dom.setAttribute(aEls[0], "onclick", 
+                              "YAHOO.Bubbling.fire(\"" + this.options.documentTrackingEvents[i].layerName + "\", {e_obj: this}); " +
+                              "return true;");
+                     }
+                  }
+               }
+            }
             
             // Import the GA tracking code to perform the tracking automatically
             // See http://code.google.com/apis/analytics/docs/tracking/asyncTracking.html
             var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            ga.src = ('https:' == window.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 
          }
@@ -174,7 +234,7 @@ if (typeof Extras == "undefined" || !Extras)
                 trackingCategory = trackedNode.properties[ptns + "trackingEnabled"] ? this.options.trackableEventCategory : this.options.defaultEventCategory;
              
              /* Finally tracks the event */
-             this._gaq.push(['_trackEvent', trackingCategory, eventName , trackingName]);    
+             _gaq.push(['_trackEvent', trackingCategory, eventName , trackingName]);    
          };
 
          if (this.options.trackingEnabled)
@@ -200,6 +260,38 @@ if (typeof Extras == "undefined" || !Extras)
       onTrackableContentEvent: function GAT_onTrackableContentEvent(layer, args)
       {
          this.trackContentEvent(args[1].eventName, args[1].nodeRef);
+      },
+      
+      /**
+       * Decoupled event listener for view content event, called via YAHOO.Bubbling
+       * 
+       * @method onActionView
+       */
+      onActionView: function GAT_onActionView(layer, args)
+      {
+         // TODO get noderef from the anchor href
+         var nodeRef = "";
+         this._trackContentEvent("View", nodeRef);
+      },
+      
+      /**
+       * Decoupled event listener for download content event, called via YAHOO.Bubbling
+       * 
+       * @method onActionDownload
+       */
+      onActionDownload: function GAT_onActionDownload(layer, args)
+      {
+         // TODO get noderef from the anchor href
+         var href = args[1].e_obj.href;
+         if (href != null)
+         {
+            var index = href.indexOf("workspace/SpacesStore");
+            if (index > 0)
+            {
+               nodeRef = href.substring(index, href.lastIndexOf("/")).replace("workspace/SpacesStore", "workspace://SpacesStore");
+               this._trackContentEvent("Download", nodeRef);
+            }
+         }
       }
    });
 })();
