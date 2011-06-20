@@ -136,16 +136,7 @@ var _gaq = _gaq || [];
           * 
           * @property documentTrackingEvents
           */
-         documentTrackingEvents: [
-            {
-               className: "onActionDownload",
-               layerName: "onActionDownload"
-            },
-            {
-               className: "onActionView",
-               layerName: "onActionView"
-            }
-         ]
+         documentTrackingEvents: []
       },
 
       /**
