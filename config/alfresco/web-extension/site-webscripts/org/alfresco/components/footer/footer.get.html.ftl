@@ -9,7 +9,7 @@
 <script type="text/javascript">//<![CDATA[
    new Extras.GoogleAnalyticsTracking("${args.htmlid}").setOptions(
    {
-      "siteId": "${siteId}",
+      "siteId": "${page.url.templateArgs.site!''}",
       "trackingEnabled": ${trackingEnabled?string},
       "trackingId": "${config.script.tracking.trackingId}",
       "defaultEventCategory": "${config.script.tracking.defaultEventCategory}",
