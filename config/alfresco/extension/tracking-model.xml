@@ -3,8 +3,8 @@
 <model name="pt:partnertracking" xmlns="http://www.alfresco.org/model/dictionary/1.0">
 
    <description>Partner KPI Tracking Model</description>
-   <author>Gabriele Columbro</author>
-   <version>1.0</version>
+   <author>Gabriele Columbro, Will Abson</author>
+   <version>1.1</version>
 
    <imports>
        <import uri="http://www.alfresco.org/model/dictionary/1.0" prefix="d" />
@@ -15,17 +15,52 @@
        <namespace uri="http://www.alfresco.org/model/partnertracking/1.0" prefix="pt" />
    </namespaces>
 
+   <constraints>
+       <constraint name="pt:trackingProvider" type="LIST">
+           <parameter name="allowedValues">
+               <list>
+                   <value>Google Analytics</value>
+               </list>
+           </parameter>
+       </constraint>
+   </constraints>
+   
    <aspects>
 
        <aspect name="pt:trackable">
-           <title>Mark a content for tracking</title>
+           <title>Mark an item for tracking</title>
            <properties>
                <property name="pt:trackingEnabled">
                    <title>Tracking Enabled</title>
                    <type>d:boolean</type>
+                   <mandatory>true</mandatory>
                    <default>true</default>
                </property>
             </properties>
+       </aspect>
+
+       <aspect name="pt:trackableContainer">
+           <title>Tracking container data</title>
+           <properties>
+               <property name="pt:trackingUID">
+                   <title>Tracking ID</title>
+                   <type>d:text</type>
+                   <mandatory>true</mandatory>
+                   <default></default>
+               </property>
+               <property name="pt:trackingProvider">
+                   <title>Tracking Provider</title>
+                   <type>d:text</type>
+                   <mandatory>true</mandatory>
+                   <default>Google Analytics</default>
+                   <constraints>
+                       <constraint ref="pt:trackingProvider" />
+                   </constraints>
+               </property>
+           </properties>
+           <mandatory-aspects>
+               <aspect>pt:trackable</aspect>
+           </mandatory-aspects>
        </aspect>
 
    </aspects>

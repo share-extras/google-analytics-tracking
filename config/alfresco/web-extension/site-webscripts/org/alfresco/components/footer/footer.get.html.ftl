@@ -6,13 +6,13 @@
 </div>
 <#assign siteId = page.url.templateArgs.site!"">
 <#if config.script.tracking??>
-<#if config.script.tracking.trackingId != "">
+<#if trackingId?has_content>
 <script type="text/javascript">//<![CDATA[
    new Extras.GoogleAnalyticsTracking("${args.htmlid}").setOptions(
    {
       "siteId": "${page.url.templateArgs.site!''}",
       "trackingEnabled": ${trackingEnabled?string},
-      "trackingId": "${config.script.tracking.trackingId}",
+      "trackingId": "${trackingId}",
       "defaultEventCategory": "${config.script.tracking.defaultEventCategory}",
       "trackableEventCategory": "${config.script.tracking.trackableEventCategory}",
       "customVars": [<#if customVars??><#list customVars as cv>
@@ -32,7 +32,8 @@
       ${messages}
    );
 //]]></script>
-<#else>
+</#if>
+<#if config.script.tracking.trackingId == "" && config.script.tracking.global == "true">
 <div class="ga-tracker-warning">${msg("warning.noTrackingId")}</div>
 </#if>
 </#if>

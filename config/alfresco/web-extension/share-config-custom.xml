@@ -1,0 +1,44 @@
+<alfresco-config>
+
+   <config evaluator="string-compare" condition="DocumentLibrary">
+      <!--
+         Used by the "Manage Aspects" action
+
+         For custom aspects, remember to also add the relevant i18n string(s)
+            cm_myaspect=My Aspect
+      -->
+      <aspects>
+         <!-- Aspects that a user can see -->
+         <visible>
+            <aspect name="pt:trackable" />
+            <aspect name="pt:trackableContainer" />
+         </visible>
+      </aspects>
+   </config>
+
+   <!-- Modify forms for items with pt:trackable aspect (existing nodes) -->
+   <config evaluator="aspect" condition="pt:trackable">
+      <forms>
+         <!-- Default form configuration used on the document details and edit metadata pages -->
+         <form>
+            <field-visibility>
+               <show id="pt:trackingEnabled" />
+            </field-visibility>
+         </form>
+      </forms>
+   </config>
+
+   <!-- Modify forms for items with pt:trackableContainer aspect (existing nodes) -->
+   <config evaluator="aspect" condition="pt:trackableContainer">
+      <forms>
+         <!-- Default form configuration used on the document details and edit metadata pages -->
+         <form>
+            <field-visibility>
+               <show id="pt:trackingUID" />
+               <show id="pt:trackingProvider" />
+            </field-visibility>
+         </form>
+      </forms>
+   </config>
+
+</alfresco-config>
