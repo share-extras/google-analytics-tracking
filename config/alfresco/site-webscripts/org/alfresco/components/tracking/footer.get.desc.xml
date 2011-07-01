@@ -1,0 +1,5 @@
+<webscript>
+  <shortname>Google Analytics Footer Component</shortname>
+  <description>Footer component with support for Google Analytics tracking</description>
+  <url>/components/analytics-footer</url>
+</webscript>
