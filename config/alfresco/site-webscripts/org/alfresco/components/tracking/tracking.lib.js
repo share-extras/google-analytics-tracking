@@ -7,7 +7,7 @@ var scriptConfig = new XML(config.script);
  */
 function getDefaultTrackingId()
 {
-   return scriptConfig.global == "true" ? scriptConfig.trackingId : null;
+   return scriptConfig.global == "true" ? scriptConfig.trackingId.toString() : null;
 }
 /**
  * Trackable site tracking ID
