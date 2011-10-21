@@ -156,7 +156,7 @@ var _gaq = _gaq || [];
             for (var i = 0; i < this.options.customVars.length; i++)
             {
                customVar = this.options.customVars[i];
-               _gaq.push(['_setCustomVar', i, customVar.name, customVar.value, customVar.scope || 3]);
+               _gaq.push(['_setCustomVar', i + 1, customVar.name, customVar.value, customVar.scope || 3]);
             }
             // Is this a document details page?
             if (ddMatch != null)
