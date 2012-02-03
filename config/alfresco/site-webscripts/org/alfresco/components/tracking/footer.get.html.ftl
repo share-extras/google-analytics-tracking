@@ -1,6 +1,3 @@
-<#-- Include HTML from the default footer web script -->
-<#include "/org/alfresco/components/footer/footer.get.html.ftl">
-
 <#-- Custom Analytics markup -->
 <#if config.script.tracking??>
 <#if trackingId?has_content>

@@ -1,0 +1,23 @@
+<!-- 
+    Customisation module to add Google Analytics code to the global page footer
+-->
+<extension>
+    <modules>
+        <module>
+            <id>Google Analytics tracking</id>
+            <components>
+                <component>
+                    <region-id>footer</region-id>
+                    <source-id>global</source-id> 
+                    <scope>global</scope>
+                    <sub-components>
+                        <!-- The 'default' sub-component will have an index of 50 -->
+                        <sub-component id="analytics-footer" index="60">
+                            <url>/components/analytics-footer</url>
+                        </sub-component>
+                    </sub-components>
+                </component>
+            </components>
+        </module>
+    </modules>
+</extension>
