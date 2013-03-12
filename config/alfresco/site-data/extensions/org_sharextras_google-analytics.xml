@@ -6,10 +6,23 @@
         <module>
             <id>Google Analytics tracking</id>
             <components>
+                <!-- General Share pages -->
                 <component>
                     <region-id>footer</region-id>
                     <source-id>global</source-id> 
                     <scope>global</scope>
+                    <sub-components>
+                        <!-- The 'default' sub-component will have an index of 50 -->
+                        <sub-component id="analytics-footer" index="60">
+                            <url>/components/analytics-footer</url>
+                        </sub-component>
+                    </sub-components>
+                </component>
+                <!-- Login page -->
+                <component>
+                    <region-id>components</region-id>
+                    <source-id>slingshot-login</source-id> 
+                    <scope>page</scope>
                     <sub-components>
                         <!-- The 'default' sub-component will have an index of 50 -->
                         <sub-component id="analytics-footer" index="60">
