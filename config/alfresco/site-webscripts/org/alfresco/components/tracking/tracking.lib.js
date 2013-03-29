@@ -17,7 +17,7 @@ function getDefaultTrackingId()
 function getTrackingID()
 {
    var siteId = page.url.templateArgs.site || null;
-   if (siteId != null)
+   if (siteId != null && context.templateId != "simple-guest") // Make sure we are in a site and not on the login screen
    {
       var siteUrl = "/api/sites/" + siteId,
          siteResp = remote.call(siteUrl);
